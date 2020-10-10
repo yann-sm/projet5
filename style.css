@@ -1,0 +1,71 @@
+
+@import url('https://fonts.googleapis.com/css2? family = Gloria + Hallelujah & display = swap');
+@import url('https://fonts.googleapis.com/css2? family = Nanum + Pen + Script & display = swap');
+@import url('https://fonts.googleapis.com/css2? family = Sedgwick + Ave & display = swap');
+
+body {
+    margin: 0;
+}
+.title {
+    position: fixed;
+    width: 100%;
+    margin-top: -20px;
+    background-color: rgb(235, 225, 229);
+    padding: 10px;
+    font-family: 'Sedgwick Ave', cursive; 
+    font-size: 25px;
+
+}
+.text-center {
+    text-align: center;
+}
+.nav a {
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+.nav a:hover {
+    text-decoration: underline red;
+}
+.section-article {
+    padding-top: 250px;
+}
+.article {
+    margin: auto;
+    width: 500px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.article:hover {
+    box-shadow: 3px 6px 10px  rgb(235, 225, 229);
+}
+.padding-top {
+    padding-top: 30px;
+}
+.row {
+    display: flex;
+    justify-content: center;
+}
+.row p {
+    padding-left: 20px;
+}
+.article-teddy {
+    font-family: 'Gloria Hallelujah display', cursive;
+}
+
+.button-add {
+  margin-top: 120px;
+  border-radius: 20px;
+  color: coral;
+  background-color: black;
+}
+.button-add:hover {
+    color: black;
+    background-color: coral;
+    text-shadow: 1px 1px 1px black;
+}
+.footer {
+    width: auto;
+    height: 150px;
+    background-color: rgb(235, 225, 229);
+}
