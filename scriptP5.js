@@ -131,7 +131,7 @@ async function teddyProduits(){
    // alert("recup produit ok");
 }
 
-
+// --- PANIER ---
 //pour récupérer le panier :
 let panier = JSON.parse(localStorage.getItem("panier"));
 
@@ -219,3 +219,65 @@ function creationPanier(){
     }
 }
 
+// --- CONTRÔLE FORMULAIRE ---
+//verification des inputs :
+checkInput = () => {
+    //regex :
+    let number = /[0-9]/;
+    let email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let specialCharacter = /[§!@#$%^&*().?":{}|<>]/;
+
+    //message contrôle :
+    let message = "";
+
+    //recuperation et tests des inputs :
+    let nom = document.getElementById("nom").value;
+    if(number.test(nom)==true || specialCharacter.test(nom)==true || nom==""){
+        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+    }else{
+        console.log("nom ok");
+    }
+
+    let prenom = document.getElementById("prenom").value;
+    if(number.test(prenom)==true || specialCharacter.test(prenom)==true || prenom==""){
+        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+    }else{
+        console.log("prénom ok");
+    }
+
+    let emailInput = document.getElementById("email").value;
+    if(email.test(emailInput)==false){
+        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+    }else{
+        console.log("emil ok");
+    }
+
+    let adresse = document.getElementById("adresse").value;
+    if(specialCharacter.test(adresse)==true || adresse==""){
+        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+    }else{
+        console.log("adresse ok");
+    }
+
+    let ville = document.getElementById("ville").value;
+    if(number.test(ville)==true || specialCharacter.test(ville)==true || ville==""){
+        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+    }else{
+        console.log("ville ok");
+    }
+
+    //si un des champ n'est pas conforme message d'erreur :
+    if( message != ""){
+        alert("attention tous les champs ne sont pas remplis correctement!!")
+    }else{//si non construction d'un objet contact qui sera envoyé :
+        contact = {
+            prenom: prenom,
+            nom: nom,
+            adresse: adresse,
+            ville: ville,
+            email: email,
+        };
+        //on retourne un objet contacte :
+        return contact;
+    }
+}
