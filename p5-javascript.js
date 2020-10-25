@@ -340,6 +340,17 @@ function ajouterAuPanier(){
     
 }  /*
 
+/* peut être initialiser un panier ???? :
+//Vérification et initialisation du panier
+if (localStorage.getItem("panier")) {
+    console.log(panier);
+} else {
+    console.log("Le panier va être initalisé");
+    let panierInit = [];
+    localStorage.setItem("panier", JSON.stringify(panierInit));
+}
+*/
+
 
   /*  //on créé différent elements :
     let contenerElt = document.createElement('div');

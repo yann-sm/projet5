@@ -8,16 +8,6 @@
 
     <link rel="stylesheet" type="text/css" href="style.css">
 
-    <script src="controllers/teddy.js"></script>
-    <script src="models/Teddy.js"></script>
-    <script src="routes/teddy.js"></script>
-    <script src="app.js"></script>
-    <script src="server.js"></script>
-
-    <script src="scriptP5.js"></script>
-    <script>teddyProduits();</script>
-    <script>nbTeddyAddAuPanier();</script>
-
 	<title>Orinoco</title>
 </head>
 <body>
@@ -26,7 +16,7 @@
             <h1>Orinoco</h1>
             <nav class="nav">
                 <a href="index.html">Acceuil</a>
-                <a href="panier.html">Panier <span class="nbTeddyAuPanier"></span></a>
+                <a href="panier.html">Panier (<span id="nbTeddyAddAuPanierPproduit"></span>)</a>
             </nav>
         </div>
     </header>
@@ -41,6 +31,8 @@
            
         </div>
 
+        <div id="mon_panier"></div>
+
 
     </section>
     <br>
@@ -49,6 +41,11 @@
 
         </div>
     </footer>
+
+
+    <script src="scriptP5.js"></script>
+    <script>teddyProduits();</script>
+    <script>nbTeddyAddAuPanierPproduit();</script>
 
 </body>
 </html>
