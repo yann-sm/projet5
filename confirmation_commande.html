@@ -7,17 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" type="text/css" href="style.css">
-   
-	<title>Orinoco</title>
+
+	<title>Orinoco - confirmation de commande</title>
 </head>
 <body>
-
     <header>
         <div class="title text-center">
             <h1>Orinoco</h1>
             <nav class="nav">
                 <a href="index.html">Acceuil</a>
-                <a href="panier.html">Panier (<span id="nbTeddyAuPanier"></span>)</a>
+                <a href="panier.html">Panier</a>
 
             </nav>
         </div>
@@ -25,22 +24,19 @@
 	
     <section class="section-article">
 
-        <h2 class="text-center article-teddy"> Tous les ours en peluches disponibles : </h2>
+        <h2 class="text-center article-teddy"> Confirmation de votre commande : </h2>
 
-        <div id="nosTeddy"></div>
-
-    </section>
+        <div id="confirmation-recap"></div>
+        <p class="text-center">Votre numéro de commande : <span id="orderId"></span></p>
 
     <footer class="footer">
-        <div>
+        <div></div>
 
-        </div>
     </footer>
 
     <script src="scriptP5.js"></script>
-    <script>teddy();</script>
-    <script>nbTeddyAddAuPanier();</script>   
+    <script>recapCommande();</script>
+    <script>recupOrder();</script>
 
 </body>
 </html>
-

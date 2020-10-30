@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     
 
-	<title>Orinoco</title>
+	<title>Orinoco - panier</title>
 </head>
 <body>
     <header>
@@ -27,39 +27,37 @@
 
         <h2 class="text-center article-teddy">-  Mon panier  -</h2>
      
-        <div id="nbPanier"></div>
         <div id="addPanier"></div>
-        <div id="panierVide"></div>
-        <div id="panier-recap"></div>
+        <div id="panierVide" class="text-center"><p>Panier vide</p></div>
    
 
     </section><br>
 
     <section>
-        <h2 class="text-center">Finalisez votre commande en remplissant le formulaiire ci-dessous :
+        <h2 class="text-center">Finalisez votre commande en remplissant le formulaire ci-dessous :
         </h2>
       
         <div class="form-cadre">
-            <form method="POST" name="formConatct" id="form_conatct">
+            <form method="POST" name="formContact" id="form_contact">
                 <div class="form-group">
                     <label for="name">Nom :</label><br>
-                    <input type="text" id="nom" name="name" required placeholder="nom de famille">
+                    <input type="text" id="nom" name="name" value="Doudou" required placeholder="nom de famille">
                 </div>
                 <div class="form-group">
                     <label for="prenom">Prénom :</label><br>
-                    <input type="text" id="prenom" name="prenom" required placeholder="prénom">
+                    <input type="text" id="prenom" name="prenom" value="super doudou" required placeholder="prénom">
                 </div>
                 <div class="form-group">
-                    <label>Adresse email :</label><br>
-                    <input type="email" id="email" name="emeil" required placeholder="gg@outlook.com">
+                    <label for="email">Adresse email :</label><br>
+                    <input type="email" id="email" name="email" value="monTeddy@orinoco.com" required placeholder="gg@outlook.com">
                 </div>
                 <div class="form-group">
                     <label for="adresse">Adresse postale :</label><br>
-                    <input type="text" id="adresse" name="adresse"  required placeholder="2 rue du goujond">
+                    <input type="text" id="adresse" name="adresse" value="2 rue du goujond" required placeholder="2 rue du goujond">
                 </div>
                 <div class="form-group">
                     <label for="ville">Ville :</label><br>
-                    <input type="text" id="ville" name="ville" required placeholder="Paris">
+                    <input type="text" id="ville" name="ville" value="Paris" required placeholder="Paris">
                 </div>
                 <div class="form-group">
                     <label>Moyen de paiment :</label><br>
@@ -69,7 +67,7 @@
                         <p>Paypal <input type="radio" class="paiment" name="paiment" value="Paypal"></p>
                     </div>
                 </div>
-                <button class="btn-form button-add" type="submit" id="commander" name="commender">Commander</button>
+                <button class="btn-form button-add" type="submit" id="commander" name="commander">Commander</button>
             </form>
         </div>
     </section>
@@ -82,6 +80,7 @@
 
     <script src="scriptP5.js"></script>
     <script>creationPanier();</script>
+    <script>confiramtionCommande();</script>
     <script>nbTeddyAddAuPanier();</script>
    
 </body>

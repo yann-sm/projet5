@@ -15,6 +15,7 @@ displayAllTeddies = () => {
     });
 };
 
+// --- PAGE INDEX ---
 async function teddy(){
     const teddy = await displayAllTeddies();
     //l'élément contener de la page index.html :
@@ -58,7 +59,7 @@ async function teddy(){
     });
    
 }
-
+// ---- PAGE PRODUIT ----
 //affichage page produits :
 let idTeddy = "";
 async function teddyProduits(){
@@ -69,6 +70,7 @@ async function teddyProduits(){
     //Affichage :
    // teddyProduits.forEach((dataTeddy) => {
         let contenerElt = document.createElement("div");
+        contenerElt.setAttribute("id", "contenerProduit");
         contenerElt.classList.add("article");
 
       //  let teddyId = document.createElement("id");
@@ -106,6 +108,8 @@ async function teddyProduits(){
         teddyColors.appendChild(teddyColorsOption2);
         teddyColors.appendChild(teddyColorsOption3);
         teddyColors.appendChild(teddyColorsOption4);
+
+        
         //creation element boutton au produit :
         let btnElt = document.createElement("button");
         btnElt.textContent = "Ajouter au panier";
@@ -153,6 +157,7 @@ async function ajouterAuPAnier()  {
     alert("Cet article a été ajouté à votre panier");
     //alert(localStorage.getItem("panier"));
     //location.reload();
+    window.location = "./index.html";
 }
 
 //afficher le nombre de teddy au panier :
@@ -161,24 +166,14 @@ function nbTeddyAddAuPanier(){
     teddyAuPanier.textContent = panier.length;
     console.log("teddy au panier : " + panier.length);
 }
-function nbTeddyAddAuPanierPindex(){
-    let teddyAuPanierI = document.getElementById("nbTeddyAuPanierPindex");
-    teddyAuPanierI.textContent = panier.length;
-    console.log("teddy au panier : " + panier.length);
-}
-    
-function nbTeddyAddAuPanierPproduit(){
-    let teddyAuPanierP = document.getElementById("nbTeddyAuPanierPproduit");
-    teddyAuPanierP.textContent = panier.length;
-    console.log("teddy au panier : " + panier.length);
-}
-    
+
 //affichage page panier :
 function creationPanier(){
     
    if(panier.length > 0){
+       //si le panier n'est pas vide on supprime l'element panier vide :
         document.getElementById("panierVide").remove();
-
+        //on créer les elements suivant pour l'article au panier :
         for(let i = 0; i < panier.length; i++){
             let contenerElt = document.createElement("div");
             contenerElt.classList.add('article');
@@ -187,6 +182,10 @@ function creationPanier(){
             teddyName.textContent = panier[i].name;
             teddyName.style.color = "darkBlue";
             contenerElt.appendChild(teddyName);
+            
+            let teddyColors = document.createElement('select');
+            teddyColors.textContent = panier[i].colors;
+            contenerElt.appendChild(teddyColors);
 
             let teddyImg = document.createElement("img");
             teddyImg.src = panier[i].imageUrl;
@@ -249,7 +248,7 @@ checkInput = () => {
     if(email.test(emailInput)==false){
         message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
     }else{
-        console.log("emil ok");
+        console.log("email ok");
     }
 
     let adresse = document.getElementById("adresse").value;
@@ -271,13 +270,180 @@ checkInput = () => {
         alert("attention tous les champs ne sont pas remplis correctement!!")
     }else{//si non construction d'un objet contact qui sera envoyé :
         contact = {
-            prenom: prenom,
-            nom: nom,
-            adresse: adresse,
-            ville: ville,
-            email: email,
+            firstName: prenom,
+            lastName: nom,
+            address: adresse,
+            city: ville,
+            email: email
         };
         //on retourne un objet contacte :
         return contact;
     }
+};
+
+//verification que le panier n'est pas vide avant envoie : (OK)
+checkPanier = () => {
+    let checkPanier = JSON.parse(localStorage.getItem("panier"));
+    //si le panier est vide :
+    if(checkPanier.length < 1 || checkPanier == null){
+        alert("votre panier est vide");
+        console.log("Le panier est vide");
+        return false;
+    }else{
+        console.log("le panier n'est pas vide");
+        return true;
+    }
+};
+
+//Envoie à l'API "http://localhost:3000/api/teddies/order",les objets contact et produits :
+let contact;
+let products = [];
+let url = "http://localhost:3000/api/teddies/order";
+
+let order = JSON.parse(sessionStorage.getItem("order"));
+
+const envoiFormulaire = (sendForm, url) => {
+    return new Promise((resolve) => {
+      let request = new XMLHttpRequest();
+      request.onload = function () {
+        if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+            sessionStorage.setItem("order", this.responseText);
+            window.location = "./confirmation_commande.html";
+            resolve(JSON.parse(this.responseText));
+            console.log("formulaire envoyé"); 
+        }else {
+           // console.log("erreur lors de l'envoye du formulaire !");   
+        }
+      };
+      request.open("POST", url);
+      request.setRequestHeader("Content-Type", "application/json");
+      request.send(sendForm);
+      console.log(sendForm);
+    });
+  };
+// (OK)
+confiramtionCommande = () => {
+    let commander = document.getElementById("form_contact");
+    commander.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if(checkPanier() == true && checkInput()!= null){
+            console.log("ok pour envoi(CC)");
+            panier.forEach((teddy) =>{
+                products.push(teddy._id);
+            });
+            console.log("ok pour tableau :"+products);
+            //création de l'objet à envoyer :
+            let commande = {
+                contact, 
+                products,
+            };
+            let sendForm = JSON.stringify(commande);
+            envoiFormulaire(sendForm, url);
+            console.log("formulaire envoyé"+commande);
+            //une fois la commande passé, suppression du localStorage, du contact, du tableau :
+            contact = {};
+            products = [];
+            localStorage.clear();
+        }else{
+            alert("Choisissez un article pour validé une commande")
+            console.log("-- ERREUR, aucun article à la commande --");
+        }
+    });
 }
+//recup des infos pour affichage de la page confirmation :
+recupOrder = () => {
+    //si différent de null on recup order :
+    if(sessionStorage.getItem("order") != null){
+        //let order = JSON.parse(sessionStorage.getItem("order"));
+        document.getElementById("orderId").textContent = order.orderId;
+        console.log("recupOrder :"+order);
+        //removeItem pour supprimer order :
+        //sessionStorage.removeItem("order");
+    }else{
+        //si non on redirige vers la page index :
+        //window.location = "./index.html";
+    }
+};
+//--- PAGE CONFIRMATION COMMANDE ---
+//affichage du recap du panier:
+recapCommande = () => {
+    let recapPanier = document.getElementById("confirmation-recap");
+
+    let tableauConfirmation = document.createElement("table");
+    tableauConfirmation.style.marginLeft = "auto";
+    tableauConfirmation.style.marginRight = "auto";
+    recapPanier.appendChild(tableauConfirmation);
+
+    let rang = document.createElement("tr");
+    tableauConfirmation.appendChild(rang);
+
+    let recapImgTeddy = document.createElement("th");
+    recapImgTeddy.textContent = "Image Teddy";
+    rang.appendChild(recapImgTeddy);
+
+    let recapNomTeddy = document.createElement("th");
+    recapNomTeddy.textContent = "Nom";
+    rang.appendChild(recapNomTeddy);
+
+    let recapColorTeddy = document.createElement("th");
+    recapColorTeddy.textContent = "Couleur";
+    rang.appendChild(recapColorTeddy);
+
+    let recapPrixTeddy = document.createElement("th");
+    recapPrixTeddy.textContent = "Prix"
+    rang.appendChild(recapPrixTeddy);
+
+    //incrémentation de l'id pour chaque ligne de teddy : (PROBLEME AVEC L'ID??)
+    let i = 0;
+    let order = JSON.parse(sessionStorage.getItem("order"));
+
+    //pour chaque produit dans order :
+    order.products.forEach((orderTeddy) => {
+        let rangArticle = document.createElement("tr");
+        rangArticle.setAttribute("id", "teddyAuPanier"+i);
+        tableauConfirmation.appendChild(rangArticle);
+
+        let imgTeddyRecap = document.createElement("img");
+        imgTeddyRecap.src = orderTeddy.imageUrl;
+        imgTeddyRecap.style.width = "100px";
+        imgTeddyRecap.style.paddingLeft = "25px";
+        rangArticle.appendChild(imgTeddyRecap);
+
+        let nomTeddyRecap = document.createElement("td");
+        nomTeddyRecap.textContent = orderTeddy.name;
+        nomTeddyRecap.style.color = "darkBlue";
+        rangArticle.appendChild(nomTeddyRecap);
+
+        let colorTeddyRecap = document.createElement("td");
+        colorTeddyRecap.textContent = orderTeddy.color;
+        rangArticle.appendChild(colorTeddyRecap);
+
+        let prixTeddyRecap = document.createElement("td");
+        prixTeddyRecap.textContent = orderTeddy.price / 100 + " €";
+        prixTeddyRecap.style.paddingLeft = "30px";
+        rangArticle.appendChild(prixTeddyRecap);
+
+        
+    });
+    //ligne total du tableau :
+    let rangTotal = document.createElement("tr");
+    tableauConfirmation.appendChild(rangTotal);
+
+    let colonneTotal = document.createElement("th");
+    colonneTotal.textContent = "Total de votre panier :";
+    rangTotal.appendChild(colonneTotal);
+
+    let recapPrixTotal = document.createElement("td");
+    recapPrixTotal.setAttribute("id", "sommeTotal");
+    rangTotal.appendChild(recapPrixTotal);
+
+
+    //calcul de l'addition total :
+    let sommeTotal = 0;
+    order.products.forEach((orderTeddy) => {
+        sommeTotal += orderTeddy.price / 100;
+    });
+    //affichage du prix total dans la commande :
+    console.log(sommeTotal);
+    document.getElementById("sommeTotal").textContent = sommeTotal + " €";
+};
