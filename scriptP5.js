@@ -91,11 +91,17 @@ async function teddyProduits(){
         teddyImg.style.width = "200px";
         teddyImg.style.paddingLeft = "90px";
 
-        //creation du choix des couleurs :
-        //création de l'élément seleect :
+        //création de l'élément select :
         let teddyColors = document.createElement('select');
+        teddyColors.setAttribute("id", "optionColor");
+        //creation du choix des couleurs :
+        teddyProduits.colors.forEach((teddyColorChoice)=>{
+            let choixColor = document.createElement("option");
+            teddyColors.appendChild(choixColor).textContent = teddyColorChoice;
+        });
+        
         //création des élément options contenant les différentes couleurs :
-        let teddyColorsOption1 = document.createElement('option');
+        /*let teddyColorsOption1 = document.createElement('option');
         teddyColorsOption1.textContent = teddyProduits.colors[0];
         let teddyColorsOption2 = document.createElement('option');
         teddyColorsOption2.textContent = teddyProduits.colors[1];
@@ -108,7 +114,7 @@ async function teddyProduits(){
         teddyColors.appendChild(teddyColorsOption2);
         teddyColors.appendChild(teddyColorsOption3);
         teddyColors.appendChild(teddyColorsOption4);
-
+        */
         
         //creation element boutton au produit :
         let btnElt = document.createElement("button");
@@ -156,7 +162,7 @@ async function ajouterAuPAnier()  {
     console.log(panier);
     alert("Cet article a été ajouté à votre panier");
     //alert(localStorage.getItem("panier"));
-    //location.reload();
+    location.reload();
     window.location = "./index.html";
 }
 
@@ -177,16 +183,16 @@ function creationPanier(){
         for(let i = 0; i < panier.length; i++){
             let contenerElt = document.createElement("div");
             contenerElt.classList.add('article');
-
+            //nom :
             let teddyName = document.createElement("strong");
             teddyName.textContent = panier[i].name;
             teddyName.style.color = "darkBlue";
             contenerElt.appendChild(teddyName);
-            
-            let teddyColors = document.createElement('select');
+           /* //couleur :
+            let teddyColors = document.createElement('p');
             teddyColors.textContent = panier[i].colors;
-            contenerElt.appendChild(teddyColors);
-
+            contenerElt.appendChild(teddyColors);*/
+            //image :
             let teddyImg = document.createElement("img");
             teddyImg.src = panier[i].imageUrl;
             contenerElt.appendChild(teddyImg);
@@ -194,11 +200,11 @@ function creationPanier(){
             teddyImg.setAttribute("title", "Photo de" + teddyImg.name);
             teddyImg.style.width = "200px";
             teddyImg.style.paddingLeft = "90px";
-
+            //prix
             let teddyPrice = document.createElement("p");
             teddyPrice.textContent = panier[i].price + " €";
             contenerElt.appendChild(teddyPrice);
-
+            //croix pour supprimer :
             let teddySup = document.createElement("p");
             teddySup.textContent = "X";
             teddySup.style.color = "darkRed";
@@ -356,6 +362,10 @@ recupOrder = () => {
     if(sessionStorage.getItem("order") != null){
         //let order = JSON.parse(sessionStorage.getItem("order"));
         document.getElementById("orderId").textContent = order.orderId;
+        document.getElementById("nomContact").textContent = order.contact.lastName;
+        document.getElementById("prenomContact").textContent = order.contact.firstName;
+        document.getElementById("adressContact").textContent = order.contact.address;
+        document.getElementById("cityContact").textContent = order.contact.city;
         console.log("recupOrder :"+order);
         //removeItem pour supprimer order :
         //sessionStorage.removeItem("order");
@@ -385,9 +395,9 @@ recapCommande = () => {
     recapNomTeddy.textContent = "Nom";
     rang.appendChild(recapNomTeddy);
 
-    let recapColorTeddy = document.createElement("th");
+    /*let recapColorTeddy = document.createElement("th");
     recapColorTeddy.textContent = "Couleur";
-    rang.appendChild(recapColorTeddy);
+    rang.appendChild(recapColorTeddy);*/
 
     let recapPrixTeddy = document.createElement("th");
     recapPrixTeddy.textContent = "Prix"
@@ -414,9 +424,9 @@ recapCommande = () => {
         nomTeddyRecap.style.color = "darkBlue";
         rangArticle.appendChild(nomTeddyRecap);
 
-        let colorTeddyRecap = document.createElement("td");
-        colorTeddyRecap.textContent = orderTeddy.color;
-        rangArticle.appendChild(colorTeddyRecap);
+       /* let colorTeddyRecap = document.createElement("td");
+        colorTeddyRecap.textContent = orderTeddy.colors.value;
+        rangArticle.appendChild(colorTeddyRecap);*/
 
         let prixTeddyRecap = document.createElement("td");
         prixTeddyRecap.textContent = orderTeddy.price / 100 + " €";
