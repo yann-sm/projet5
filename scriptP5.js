@@ -81,7 +81,7 @@ async function teddyProduits(){
         teddyName.style.fontSyze = "20px";
 
         let teddyPrice = document.createElement("p");
-        teddyPrice.textContent = teddyProduits.price + "€";
+        teddyPrice.textContent = teddyProduits.price / 100 + "€";
 
         let teddyDescription = document.createElement("p");
         teddyDescription.textContent = teddyProduits.description;
@@ -200,9 +200,9 @@ function creationPanier(){
             teddyImg.setAttribute("title", "Photo de" + teddyImg.name);
             teddyImg.style.width = "200px";
             teddyImg.style.paddingLeft = "90px";
-            //prix
+            //prix :
             let teddyPrice = document.createElement("p");
-            teddyPrice.textContent = panier[i].price + " €";
+            teddyPrice.textContent = panier[i].price / 100 + " €";
             contenerElt.appendChild(teddyPrice);
             //croix pour supprimer :
             let teddySup = document.createElement("p");
@@ -221,6 +221,18 @@ function creationPanier(){
             contenerElt.appendChild(teddySup);
             document.getElementById("addPanier").appendChild(contenerElt);
         } 
+        //total du montant au panier :
+        let sommeTotalPanier = 0;
+        panier.forEach((panier)=>{
+            sommeTotalPanier += panier.price / 100;
+        });
+        let totalPanier = document.createElement("p");
+        totalPanier.classList.add('text-center');
+        totalPanier.style.fontWeight = "bold";
+        totalPanier.style.fontSize = "18px";
+        totalPanier.style.textDecoration = "underline";
+        totalPanier.textContent = "Montant total de votre panier : "+sommeTotalPanier+" €";
+        document.getElementById("totalPanier").appendChild(totalPanier);
     }
 }
 

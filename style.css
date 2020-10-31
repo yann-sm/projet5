@@ -9,14 +9,18 @@ body {
 .title {
     position: fixed;
     width: 100%;
-    margin-top: -20px;
-    background-color: rgb(235, 225, 229);
+    margin-top: -10px;
+    background-color: #F3E9F1/*rgb(240, 228, 228)*/;
     padding: 10px;
     font-family: 'Sedgwick Ave', cursive; 
     font-size: 25px;
 }
 .text-center {
     text-align: center;
+}
+.iconImage {
+    margin-top: 20px;
+    margin-bottom: -10px;
 }
 
 .nav a {
@@ -101,5 +105,5 @@ input {
 .footer {
     width: auto;
     height: 150px;
-    background-color: rgb(235, 225, 229);
+    background-color: #F3E9F1;
 }
