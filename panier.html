@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Permanent+Marker&display=swap" rel="stylesheet">
     
 
 	<title>Orinoco - panier</title>
@@ -15,7 +17,11 @@
 <body>
     <header>
         <div class="title text-center">
-            <img src="icon_orinoco.png" class="iconImage">
+            <div class="row">
+                <p><img src="icon_orinoco.png" class="iconImage"></p>
+                <h1>Teddy</h1>
+            </div>
+
             <nav class="nav">
                 <a href="index.html">Acceuil</a>
                 <a href="panier.html">Panier (<span id="nbTeddyAuPanier"></span>)</a>
@@ -32,12 +38,10 @@
 
         <div id="totalPanier"></div>
    
-
     </section><br>
 
-    <section>
-        <h2 class="text-center">Finalisez votre commande en remplissant le formulaire ci-dessous :
-        </h2>
+    <section class="section-formulaire">
+        <h2 class="text-center">Finalisez votre commande en remplissant le formulaire ci-dessous :</h2>
       
         <div class="form-cadre">
             <form method="POST" name="formContact" id="form_contact">
@@ -73,9 +77,10 @@
             </form>
         </div>
     </section>
-    <footer class="footer">
-        <div>
 
+    <footer class="footer">
+        <div class="copyright text-center">
+            <p>Copyright © Orinoco Teddy 2020. P5.</p>
         </div>
     </footer>
 

@@ -5,6 +5,20 @@
 
 body {
     margin: 0;
+    height: 100%;
+}
+body::before {
+    content: "";
+    background-image: url("./images/teddy_5.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    z-index: -1;
 }
 .title {
     position: fixed;
@@ -12,8 +26,16 @@ body {
     margin-top: -10px;
     background-color: #F3E9F1/*rgb(240, 228, 228)*/;
     padding: 10px;
-    font-family: 'Sedgwick Ave', cursive; 
+    font-family: 'Permanent Marker', cursive; 
     font-size: 25px;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.row h1{
+    margin-left: 20px;
+    margin-top: 50px;
 }
 .text-center {
     text-align: center;
@@ -34,6 +56,17 @@ body {
 .section-article {
     padding-top: 250px;
 }
+.lienTeddy {
+    margin-left: 10px;
+    font-family: 'Patrick Hand', cursive;
+    text-decoration: none;    
+    color: black;
+}
+.lienTeddy:hover {
+    text-decoration: underline red;
+    color: darkorchid;
+}
+
 .article {
     margin-bottom: 60px;
     width: 400px;
@@ -44,7 +77,7 @@ body {
     padding-right: 80px;
 }
 .article:hover {
-    box-shadow: 3px 6px 10px  rgb(235, 225, 229);
+    box-shadow: 3px 6px 10px  black/*rgb(235, 225, 229)*/;
 }
 .padding-top {
     padding-top: 30px;
@@ -57,7 +90,7 @@ body {
     padding-left: 20px;
 }
 .article-teddy {
-    font-family: 'Gloria Hallelujah display', cursive;
+    font-family: 'Patrick Hand', cursive;
 }
 
 .button-add {
@@ -88,7 +121,7 @@ body {
     margin: auto;
     font-size: 17px;
     font-weight: 900;
-    margin-bottom: 40px;
+    margin-bottom: 110px;
 }
 .btn-form{
     width: 400px;
@@ -102,8 +135,130 @@ input {
 .form label {
     font-weight: 900;
 }
+.paiment {
+    width: 10px;
+}
 .footer {
-    width: auto;
-    height: 150px;
+    position: fixed;
+    width: 100%;
+    height: 50px;
     background-color: #F3E9F1;
+    bottom: 0;
+}
+.copyright{
+    font-family: 'Patrick Hand', cursive;
+}
+
+/* MEDIA QUERIES */
+
+@media all and (max-width: 830px) {
+    .form-cadre{
+        width: 375px;
+        padding-left: 0;
+    }
+    .iconImage{
+        margin-left: -70px;
+        width: 200px;
+        height: 50px;
+    }
+    h1{
+        font-size: 30px;
+    }
+}
+@media all and (max-width: 768px) {
+    .form-cadre{
+        width: 375px;
+        padding-left: 0;
+    }
+    .iconImage{
+        margin-left: -70px;
+        width: 200px;
+        height: 50px;
+    }
+    h1{
+        font-size: 30px;
+    }
+}
+@media all and (max-width: 425px) {
+    .form-cadre{
+        width: 425px;
+        padding-left: 10px;
+    }
+    .iconImage{
+        margin-left: -70px;
+        width: 200px;
+        height: 50px;
+    }
+    h1{
+        font-size: 30px;
+    }
+    input{
+        width: 400px;
+    }
+    .btn-form{
+        width: 400px;
+        padding-left: 5px;
+    }
+}
+@media all and (max-width: 375px) {
+    .form-cadre{
+        width: 375px;
+        padding-left: 5px;
+    }
+    .iconImage{
+        margin-left: -70px;
+        width: 200px;
+        height: 50px;
+    }
+    h1{
+        font-size: 25px;
+    }
+    input{
+        width: 350px;
+    }
+    .btn-form{
+        width: 350px;
+        margin-left: 5px;
+        padding-left: 5px;
+    }
+}
+@media all and (max-width: 320px) {
+  /*  body {
+        background: white;
+        width: 320px;
+        height: auto;
+    }
+    body::before{
+        background-image: none;
+     
+    }
+    */
+    .form-cadre{
+        width: 320px;
+        padding-left: 5px;
+    }
+    input{
+        width: 300px;
+    }
+    .btn-form{
+        width: 300px;
+        margin-left: 5px;
+        padding-left: 5px;
+    }
+    .article{
+        width: 320px;
+        padding-left: 5px;
+        padding-right: 0;
+    }
+    .iconImage{
+        margin-left: -70px;
+        width: 200px;
+        height: 50px;
+    }
+    h1{
+        font-size: 25px;
+    }
+    footer{
+        
+    }
 }

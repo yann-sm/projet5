@@ -44,6 +44,7 @@ async function teddy(){
 
         let teddyLien = document.createElement("a");
         teddyLien.textContent = "voire description";
+        teddyLien.classList.add('lienTeddy');
         //on fait correspondre la page produits avec l'id du teddy selectinné :
         teddyLien.setAttribute("href", "produits.html?id="+dataTeddy._id);
 
@@ -206,7 +207,7 @@ function creationPanier(){
             contenerElt.appendChild(teddyPrice);
             //croix pour supprimer :
             let teddySup = document.createElement("p");
-            teddySup.textContent = "X";
+            teddySup.textContent = "X supprimer du panier";
             teddySup.style.color = "darkRed";
             teddySup.style.cursor = "pointer";
             teddySup.addEventListener("click", teddyRemove);
@@ -314,9 +315,10 @@ checkPanier = () => {
 };
 
 //Envoie à l'API "http://localhost:3000/api/teddies/order",les objets contact et produits :
-let contact;
-let products = [];
-let url = "http://localhost:3000/api/teddies/order";
+/**/
+//let contact;
+//let products = [];
+//let url = "http://localhost:3000/api/teddies/order";
 
 let order = JSON.parse(sessionStorage.getItem("order"));
 
@@ -333,19 +335,22 @@ const envoiFormulaire = (sendForm, url) => {
            // console.log("erreur lors de l'envoye du formulaire !");   
         }
       };
-      request.open("POST", url);
+      request.open("POST", "http://localhost:3000/api/teddies/order");
       request.setRequestHeader("Content-Type", "application/json");
       request.send(sendForm);
       console.log(sendForm);
     });
   };
-// (OK)
-confiramtionCommande = () => {
+// (OK) 
+const confiramtionCommande = () => {
+   
+    let products = [];
     let commander = document.getElementById("form_contact");
     commander.addEventListener("submit", (event) => {
         event.preventDefault();
+        
         if(checkPanier() == true && checkInput()!= null){
-            console.log("ok pour envoi(CC)");
+            console.log("ok pour envoi...");
             panier.forEach((teddy) =>{
                 products.push(teddy._id);
             });
@@ -356,7 +361,7 @@ confiramtionCommande = () => {
                 products,
             };
             let sendForm = JSON.stringify(commande);
-            envoiFormulaire(sendForm, url);
+            envoiFormulaire(sendForm, "http://localhost:3000/api/teddies/order");
             console.log("formulaire envoyé"+commande);
             //une fois la commande passé, suppression du localStorage, du contact, du tableau :
             contact = {};
@@ -368,7 +373,7 @@ confiramtionCommande = () => {
         }
     });
 }
-//recup des infos pour affichage de la page confirmation :
+//recup des infos pour affichage dans la page confirmation :
 recupOrder = () => {
     //si différent de null on recup order :
     if(sessionStorage.getItem("order") != null){
@@ -380,42 +385,39 @@ recupOrder = () => {
         document.getElementById("cityContact").textContent = order.contact.city;
         console.log("recupOrder :"+order);
         //removeItem pour supprimer order :
-        //sessionStorage.removeItem("order");
+        sessionStorage.removeItem("order");
     }else{
         //si non on redirige vers la page index :
-        //window.location = "./index.html";
+        window.location = "./index.html";
     }
 };
 //--- PAGE CONFIRMATION COMMANDE ---
 //affichage du recap du panier:
 recapCommande = () => {
+    //element auquel va être ratachéle tableau :
     let recapPanier = document.getElementById("confirmation-recap");
-
+    //element tableau :
     let tableauConfirmation = document.createElement("table");
     tableauConfirmation.style.marginLeft = "auto";
     tableauConfirmation.style.marginRight = "auto";
     recapPanier.appendChild(tableauConfirmation);
-
+    //rang du tableau :
     let rang = document.createElement("tr");
     tableauConfirmation.appendChild(rang);
-
+    //colonne image teddy :
     let recapImgTeddy = document.createElement("th");
     recapImgTeddy.textContent = "Image Teddy";
     rang.appendChild(recapImgTeddy);
-
+    //colonne nom teddy :
     let recapNomTeddy = document.createElement("th");
     recapNomTeddy.textContent = "Nom";
     rang.appendChild(recapNomTeddy);
-
-    /*let recapColorTeddy = document.createElement("th");
-    recapColorTeddy.textContent = "Couleur";
-    rang.appendChild(recapColorTeddy);*/
-
+    //colonne prix teddy :
     let recapPrixTeddy = document.createElement("th");
     recapPrixTeddy.textContent = "Prix"
     rang.appendChild(recapPrixTeddy);
 
-    //incrémentation de l'id pour chaque ligne de teddy : (PROBLEME AVEC L'ID??)
+    //incrémentation de l'id pour chaque ligne de teddy :
     let i = 0;
     let order = JSON.parse(sessionStorage.getItem("order"));
 
@@ -434,6 +436,7 @@ recapCommande = () => {
         let nomTeddyRecap = document.createElement("td");
         nomTeddyRecap.textContent = orderTeddy.name;
         nomTeddyRecap.style.color = "darkBlue";
+        nomTeddyRecap.classList.add('text-center');
         rangArticle.appendChild(nomTeddyRecap);
 
        /* let colorTeddyRecap = document.createElement("td");
@@ -442,7 +445,7 @@ recapCommande = () => {
 
         let prixTeddyRecap = document.createElement("td");
         prixTeddyRecap.textContent = orderTeddy.price / 100 + " €";
-        prixTeddyRecap.style.paddingLeft = "30px";
+        prixTeddyRecap.style.paddingLeft = "20px";
         rangArticle.appendChild(prixTeddyRecap);
 
         
