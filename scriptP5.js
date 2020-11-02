@@ -1,6 +1,6 @@
 
 //requête GET pour récupérer les éléments du serveur :
-displayAllTeddies = () => {
+const displayAllTeddies = () => {
     return new Promise((resolve) => {
         let request = new XMLHttpRequest();
         request.onreadystatechange = function() {
@@ -8,7 +8,6 @@ displayAllTeddies = () => {
             resolve(JSON.parse(this.responseText));
             console.log("Connecté"); 
         }
-        
     };
     request.open("GET", "http://localhost:3000/api/teddies/" + idTeddy);
     request.send();
@@ -25,9 +24,6 @@ async function teddy(){
         // création d'un élément div servant de contener :
         let contenerElt = document.createElement("div");
         contenerElt.classList.add('article');
-        //création de l'élément id :
-       // let teddyId = document.createElement("id");
-       // teddyId.id = dataTeddy._id;
         //crétaion de l'élément strong pour le nom des teddys :
         let teddyName = document.createElement("strong");
         teddyName.textContent = dataTeddy.name;
@@ -36,14 +32,13 @@ async function teddy(){
         //création de l'élémnet img pour l'image :
         let teddyImg = document.createElement("img");
         teddyImg.src = dataTeddy.imageUrl;
-        //teddyImg.setAttribute("src", dataTeddy.imageUrl);
         teddyImg.setAttribute("alt", "Photo de" + dataTeddy.name);
         teddyImg.setAttribute("title", "Photo de" + dataTeddy.name);
         teddyImg.style.width = "200px";
         teddyImg.style.paddingLeft = "90px";
-
+        //création elemnent lien pour lier a la page produit :
         let teddyLien = document.createElement("a");
-        teddyLien.textContent = "voire description";
+        teddyLien.textContent = "voir description";
         teddyLien.classList.add('lienTeddy');
         //on fait correspondre la page produits avec l'id du teddy selectinné :
         teddyLien.setAttribute("href", "produits.html?id="+dataTeddy._id);
@@ -69,13 +64,10 @@ async function teddyProduits(){
     //l'élément contener de la page produits.html :
     let listDatasElt = document.getElementById("affichageListeTeddy");
     //Affichage :
-   // teddyProduits.forEach((dataTeddy) => {
         let contenerElt = document.createElement("div");
         contenerElt.setAttribute("id", "contenerProduit");
         contenerElt.classList.add("article");
 
-      //  let teddyId = document.createElement("id");
-       // teddyId.id = dataTeddy._id;
         let teddyName = document.createElement("strong");
         teddyName.textContent = teddyProduits.name;
         teddyName.style.color = "darkblue";
@@ -100,7 +92,6 @@ async function teddyProduits(){
             let choixColor = document.createElement("option");
             teddyColors.appendChild(choixColor).textContent = teddyColorChoice;
         });
-        
         //création des élément options contenant les différentes couleurs :
         /*let teddyColorsOption1 = document.createElement('option');
         teddyColorsOption1.textContent = teddyProduits.colors[0];
@@ -128,7 +119,6 @@ async function teddyProduits(){
         //création d'un élément br :
         let brElt = document.createElement("br");
         //on ajoute tous les éléments créé au conteneur :
-       // contenerElt.appendChild(teddyId);
         contenerElt.appendChild(teddyName);
         contenerElt.appendChild(teddyPrice);
         contenerElt.appendChild(teddyDescription);
@@ -138,7 +128,6 @@ async function teddyProduits(){
         contenerElt.appendChild(brElt);
         //on ajoute le contener à l'élémnet html :
         listDatasElt.appendChild(contenerElt);
-   // });
    // alert("recup produit ok");
 }
 
@@ -176,7 +165,6 @@ function nbTeddyAddAuPanier(){
 
 //affichage page panier :
 function creationPanier(){
-    
    if(panier.length > 0){
        //si le panier n'est pas vide on supprime l'element panier vide :
         document.getElementById("panierVide").remove();
@@ -188,15 +176,9 @@ function creationPanier(){
             let teddyName = document.createElement("strong");
             teddyName.textContent = panier[i].name;
             teddyName.style.color = "darkBlue";
-            contenerElt.appendChild(teddyName);
-           /* //couleur :
-            let teddyColors = document.createElement('p');
-            teddyColors.textContent = panier[i].colors;
-            contenerElt.appendChild(teddyColors);*/
             //image :
             let teddyImg = document.createElement("img");
             teddyImg.src = panier[i].imageUrl;
-            contenerElt.appendChild(teddyImg);
             teddyImg.setAttribute("alt", "Photo de" + teddyImg.name);
             teddyImg.setAttribute("title", "Photo de" + teddyImg.name);
             teddyImg.style.width = "200px";
@@ -204,21 +186,29 @@ function creationPanier(){
             //prix :
             let teddyPrice = document.createElement("p");
             teddyPrice.textContent = panier[i].price / 100 + " €";
-            contenerElt.appendChild(teddyPrice);
             //croix pour supprimer :
+            let s = 0;
             let teddySup = document.createElement("p");
             teddySup.textContent = "X supprimer du panier";
             teddySup.style.color = "darkRed";
             teddySup.style.cursor = "pointer";
-            teddySup.addEventListener("click", teddyRemove);
-            function teddyRemove(i){
+            teddySup.addEventListener("click", teddyRemove);  
+            function teddyRemove(){
+                contenerElt.remove();
+                //on recupère le tableau :
                 panier.splice(i, 1); 
-                localStorage.removeItem(i);
+                //si on recupere 'panier.splice(i)' uniquement i, tous les elements du tableau sont supprimé.
+                //on vide le localstorage (clear ou removeItem):
+                localStorage.clear();//localStorage.removeItem(i);
                 // Mise à jour du panier avec suppression de l'article :
                 localStorage.setItem("panier", JSON.stringify(panier));
                 //Mise à jour de la page :
                 window.location.reload();
-            }   
+            }  
+            //ajout des éléments au contener :
+            contenerElt.appendChild(teddyName);
+            contenerElt.appendChild(teddyImg);
+            contenerElt.appendChild(teddyPrice);
             contenerElt.appendChild(teddySup);
             document.getElementById("addPanier").appendChild(contenerElt);
         } 
@@ -239,7 +229,7 @@ function creationPanier(){
 
 // --- CONTRÔLE FORMULAIRE ---
 //verification des inputs :
-checkInput = () => {
+const checkInput = () => {
     //regex :
     let number = /[0-9]/;
     let email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -295,13 +285,13 @@ checkInput = () => {
             city: ville,
             email: email
         };
-        //on retourne un objet contacte :
+        //on retourne un objet contact :
         return contact;
     }
 };
 
 //verification que le panier n'est pas vide avant envoie : (OK)
-checkPanier = () => {
+const checkPanier = () => {
     let checkPanier = JSON.parse(localStorage.getItem("panier"));
     //si le panier est vide :
     if(checkPanier.length < 1 || checkPanier == null){
@@ -374,7 +364,7 @@ const confiramtionCommande = () => {
     });
 }
 //recup des infos pour affichage dans la page confirmation :
-recupOrder = () => {
+const recupOrder = () => {
     //si différent de null on recup order :
     if(sessionStorage.getItem("order") != null){
         //let order = JSON.parse(sessionStorage.getItem("order"));
@@ -393,28 +383,30 @@ recupOrder = () => {
 };
 //--- PAGE CONFIRMATION COMMANDE ---
 //affichage du recap du panier:
-recapCommande = () => {
-    //element auquel va être ratachéle tableau :
+const recapCommande = () => {
+    //element auquel va être rataché le tableau :
     let recapPanier = document.getElementById("confirmation-recap");
+    //création du tableau :
     //element tableau :
     let tableauConfirmation = document.createElement("table");
     tableauConfirmation.style.marginLeft = "auto";
     tableauConfirmation.style.marginRight = "auto";
-    recapPanier.appendChild(tableauConfirmation);
     //rang du tableau :
     let rang = document.createElement("tr");
     tableauConfirmation.appendChild(rang);
     //colonne image teddy :
     let recapImgTeddy = document.createElement("th");
     recapImgTeddy.textContent = "Image Teddy";
-    rang.appendChild(recapImgTeddy);
     //colonne nom teddy :
     let recapNomTeddy = document.createElement("th");
     recapNomTeddy.textContent = "Nom";
-    rang.appendChild(recapNomTeddy);
     //colonne prix teddy :
     let recapPrixTeddy = document.createElement("th");
     recapPrixTeddy.textContent = "Prix"
+    //ajout des element :
+    recapPanier.appendChild(tableauConfirmation);
+    rang.appendChild(recapImgTeddy);
+    rang.appendChild(recapNomTeddy);
     rang.appendChild(recapPrixTeddy);
 
     //incrémentation de l'id pour chaque ligne de teddy :
@@ -425,43 +417,38 @@ recapCommande = () => {
     order.products.forEach((orderTeddy) => {
         let rangArticle = document.createElement("tr");
         rangArticle.setAttribute("id", "teddyAuPanier"+i);
-        tableauConfirmation.appendChild(rangArticle);
-
+        
         let imgTeddyRecap = document.createElement("img");
         imgTeddyRecap.src = orderTeddy.imageUrl;
         imgTeddyRecap.style.width = "100px";
         imgTeddyRecap.style.paddingLeft = "25px";
-        rangArticle.appendChild(imgTeddyRecap);
-
+        
         let nomTeddyRecap = document.createElement("td");
         nomTeddyRecap.textContent = orderTeddy.name;
         nomTeddyRecap.style.color = "darkBlue";
         nomTeddyRecap.classList.add('text-center');
-        rangArticle.appendChild(nomTeddyRecap);
-
-       /* let colorTeddyRecap = document.createElement("td");
-        colorTeddyRecap.textContent = orderTeddy.colors.value;
-        rangArticle.appendChild(colorTeddyRecap);*/
-
+        
         let prixTeddyRecap = document.createElement("td");
         prixTeddyRecap.textContent = orderTeddy.price / 100 + " €";
         prixTeddyRecap.style.paddingLeft = "20px";
-        rangArticle.appendChild(prixTeddyRecap);
 
-        
+        tableauConfirmation.appendChild(rangArticle);
+        rangArticle.appendChild(imgTeddyRecap);
+        rangArticle.appendChild(nomTeddyRecap);
+        rangArticle.appendChild(prixTeddyRecap);
     });
     //ligne total du tableau :
     let rangTotal = document.createElement("tr");
-    tableauConfirmation.appendChild(rangTotal);
 
     let colonneTotal = document.createElement("th");
     colonneTotal.textContent = "Total de votre panier :";
-    rangTotal.appendChild(colonneTotal);
-
+    
     let recapPrixTotal = document.createElement("td");
     recapPrixTotal.setAttribute("id", "sommeTotal");
-    rangTotal.appendChild(recapPrixTotal);
 
+    tableauConfirmation.appendChild(rangTotal);
+    rangTotal.appendChild(colonneTotal);
+    rangTotal.appendChild(recapPrixTotal);
 
     //calcul de l'addition total :
     let sommeTotal = 0;

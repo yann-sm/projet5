@@ -26,7 +26,7 @@ body::before {
     margin-top: -10px;
     background-color: #F3E9F1/*rgb(240, 228, 228)*/;
     padding: 10px;
-    font-family: 'Permanent Marker', cursive; 
+    font-family: 'Patrick Hand', cursive; 
     font-size: 25px;
 }
 .row{
@@ -137,6 +137,9 @@ input {
 }
 .paiment {
     width: 10px;
+}
+fieldset {
+    margin-bottom: 100px;
 }
 .footer {
     position: fixed;
@@ -258,7 +261,5 @@ input {
     h1{
         font-size: 25px;
     }
-    footer{
-        
-    }
+
 }
