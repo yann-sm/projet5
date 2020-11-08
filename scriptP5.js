@@ -4,11 +4,11 @@ const displayAllTeddies = () => {
     return new Promise((resolve) => {
         let request = new XMLHttpRequest();
         request.onreadystatechange = function() {
-        if (this.readyState == XMLHttpRequest.DONE && this.status == 200 && this.status < 400) {
-            resolve(JSON.parse(this.responseText));
-            console.log("Connecté"); 
-        }
-    };
+            if (this.readyState == XMLHttpRequest.DONE && this.status == 200 && this.status < 400) {
+                resolve(JSON.parse(this.responseText));
+                console.log("Connecté"); 
+            }
+        };
     request.open("GET", "http://localhost:3000/api/teddies/" + idTeddy);
     request.send();
     });
@@ -47,9 +47,10 @@ async function teddy(){
         //on ajoute tous les éléments récupérés au contener :
        // contenerElt.appendChild(teddyId);
         contenerElt.appendChild(teddyName);
+        contenerElt.appendChild(teddyLien);
         contenerElt.appendChild(brElt);
         contenerElt.appendChild(teddyImg);
-        contenerElt.appendChild(teddyLien);
+        
         //on ajoute le contener a l'élément html :
         listDatasElt.appendChild(contenerElt);
     });
@@ -58,7 +59,10 @@ async function teddy(){
 // ---- PAGE PRODUIT ----
 //affichage page produits :
 let idTeddy = "";
+
 async function teddyProduits(){
+    //let choiceColor = document.getElementById("listOptionColor");
+    //colorTeddyChoice = choiceColor.options[choiceColor.selectesIndex].text;
     idTeddy = location.search.substring(4);
     const teddyProduits = await displayAllTeddies();
     //l'élément contener de la page produits.html :
@@ -86,27 +90,12 @@ async function teddyProduits(){
 
         //création de l'élément select :
         let teddyColors = document.createElement('select');
-        teddyColors.setAttribute("id", "optionColor");
+        teddyColors.setAttribute("id", "listOptionColor");
         //creation du choix des couleurs :
-        teddyProduits.colors.forEach((teddyColorChoice)=>{
+        teddyProduits.colors.forEach((teddyColorChoice) => {
             let choixColor = document.createElement("option");
-            teddyColors.appendChild(choixColor).textContent = teddyColorChoice;
+            teddyColors.appendChild(choixColor).innerHTML = teddyColorChoice;
         });
-        //création des élément options contenant les différentes couleurs :
-        /*let teddyColorsOption1 = document.createElement('option');
-        teddyColorsOption1.textContent = teddyProduits.colors[0];
-        let teddyColorsOption2 = document.createElement('option');
-        teddyColorsOption2.textContent = teddyProduits.colors[1];
-        let teddyColorsOption3 = document.createElement('option');
-        teddyColorsOption3.textContent = teddyProduits.colors[2];
-        let teddyColorsOption4 = document.createElement('option');
-        teddyColorsOption4.textContent = teddyProduits.colors[3];
-        //ajout de toutes les option à l'élément select :
-        teddyColors.appendChild(teddyColorsOption1);
-        teddyColors.appendChild(teddyColorsOption2);
-        teddyColors.appendChild(teddyColorsOption3);
-        teddyColors.appendChild(teddyColorsOption4);
-        */
         
         //creation element boutton au produit :
         let btnElt = document.createElement("button");
@@ -145,24 +134,35 @@ if (localStorage.getItem("panier")) {
 }
  
 //Ajout de l'article au panier de l'utilisateur
-async function ajouterAuPAnier()  {
+async function ajouterAuPAnier() {
     const add = await displayAllTeddies();
-    panier.push(add);
+   /* panier.push(add);*/
+    let teddId = add._id;
+    let teddName = add.name;
+    let teddImg = add.imageUrl;
+    let teddPrice = add.price;
+    let teddColor = document.getElementById("listOptionColor").options[document.getElementById("listOptionColor").selectedIndex].text;
+    panier.push({
+        teddId,
+        teddName,
+        teddImg,
+        teddPrice,
+        teddColor
+    });
     localStorage.setItem("panier", JSON.stringify(panier));
     console.log(panier);
+    console.log("ok pour la ou les couleurs !")
     alert("Cet article a été ajouté à votre panier");
     //alert(localStorage.getItem("panier"));
     location.reload();
     window.location = "./index.html";
 }
-
 //afficher le nombre de teddy au panier :
 function nbTeddyAddAuPanier(){
     let teddyAuPanier = document.getElementById("nbTeddyAuPanier");
     teddyAuPanier.textContent = panier.length;
     console.log("teddy au panier : " + panier.length);
 }
-
 //affichage page panier :
 function creationPanier(){
    if(panier.length > 0){
@@ -172,20 +172,28 @@ function creationPanier(){
         for(let i = 0; i < panier.length; i++){
             let contenerElt = document.createElement("div");
             contenerElt.classList.add('article');
+            //ajout de deux colonne :
+            let rang = document.createElement("tr");
+            let col1 = document.createElement("td");
+            //rang.appendChild(col1);
+           // rang.appendChild(col2);
             //nom :
             let teddyName = document.createElement("strong");
-            teddyName.textContent = panier[i].name;
+            teddyName.textContent = panier[i].teddName;//name;
             teddyName.style.color = "darkBlue";
+            //couleur :
+            let teddyColor = document.createElement("span");
+            teddyColor.textContent = " "+panier[i].teddColor;//panier[i].colors[i];
             //image :
             let teddyImg = document.createElement("img");
-            teddyImg.src = panier[i].imageUrl;
+            teddyImg.src = panier[i].teddImg;////imageUrl;
             teddyImg.setAttribute("alt", "Photo de" + teddyImg.name);
             teddyImg.setAttribute("title", "Photo de" + teddyImg.name);
-            teddyImg.style.width = "200px";
-            teddyImg.style.paddingLeft = "90px";
+            teddyImg.classList.add('articlePanier');
+           
             //prix :
             let teddyPrice = document.createElement("p");
-            teddyPrice.textContent = panier[i].price / 100 + " €";
+            teddyPrice.textContent = panier[i].teddPrice/ 100 + " €";//price 
             //croix pour supprimer :
             let s = 0;
             let teddySup = document.createElement("p");
@@ -206,16 +214,20 @@ function creationPanier(){
                 window.location.reload();
             }  
             //ajout des éléments au contener :
-            contenerElt.appendChild(teddyName);
-            contenerElt.appendChild(teddyImg);
-            contenerElt.appendChild(teddyPrice);
-            contenerElt.appendChild(teddySup);
+            rang.appendChild(teddyName);
+            rang.appendChild(teddyColor);
+            col1.appendChild(teddyImg);
+            rang.appendChild(teddyPrice);
+            rang.appendChild(teddySup);
+            contenerElt.appendChild(rang);
+            contenerElt.appendChild(col1);
+           
             document.getElementById("addPanier").appendChild(contenerElt);
         } 
         //total du montant au panier :
         let sommeTotalPanier = 0;
-        panier.forEach((panier)=>{
-            sommeTotalPanier += panier.price / 100;
+        panier.forEach((panier) => {
+            sommeTotalPanier += panier.teddPrice / 100;//price;
         });
         let totalPanier = document.createElement("p");
         totalPanier.classList.add('text-center');
@@ -241,42 +253,41 @@ const checkInput = () => {
     //recuperation et tests des inputs :
     let nom = document.getElementById("nom").value;
     if(number.test(nom)==true || specialCharacter.test(nom)==true || nom==""){
-        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+        message = "Les inforamtions saisie pour le nom ne sont pas valide, entrer des informations valide";
     }else{
         console.log("nom ok");
     }
 
     let prenom = document.getElementById("prenom").value;
     if(number.test(prenom)==true || specialCharacter.test(prenom)==true || prenom==""){
-        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+        message = "Les inforamtions saisie pour le prénom ne sont pas valide, entrer des informations valide";
     }else{
         console.log("prénom ok");
     }
 
     let emailInput = document.getElementById("email").value;
     if(email.test(emailInput)==false){
-        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+        message = "Les inforamtions saisie pour l'email ne sont pas valide, entrer des informations valide";
     }else{
         console.log("email ok");
     }
 
     let adresse = document.getElementById("adresse").value;
     if(specialCharacter.test(adresse)==true || adresse==""){
-        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+        message = "Les inforamtions saisie pour l'adresse ne sont pas valide, entrer des informations valide";
     }else{
         console.log("adresse ok");
     }
 
     let ville = document.getElementById("ville").value;
     if(number.test(ville)==true || specialCharacter.test(ville)==true || ville==""){
-        message = "Les inforamtions saisie ne sont pas valide, entrer des informations valide";
+        message = "Les inforamtions saisie pour la ville ne sont pas valide, entrer des informations valide";
     }else{
         console.log("ville ok");
     }
-
     //si un des champ n'est pas conforme message d'erreur :
     if( message != ""){
-        alert("attention tous les champs ne sont pas remplis correctement!!")
+        alert(message);
     }else{//si non construction d'un objet contact qui sera envoyé :
         contact = {
             firstName: prenom,
@@ -331,9 +342,8 @@ const envoiFormulaire = (sendForm, url) => {
       console.log(sendForm);
     });
   };
-// (OK) 
+// 
 const confiramtionCommande = () => {
-   
     let products = [];
     let commander = document.getElementById("form_contact");
     commander.addEventListener("submit", (event) => {
@@ -342,24 +352,26 @@ const confiramtionCommande = () => {
         if(checkPanier() == true && checkInput()!= null){
             console.log("ok pour envoi...");
             panier.forEach((teddy) =>{
-                products.push(teddy._id);
+                products.push(
+                    teddy.teddId,
+                );
             });
-            console.log("ok pour tableau :"+products);
+            console.log("ok pour tableau :" + products);
             //création de l'objet à envoyer :
             let commande = {
                 contact, 
-                products,
+                products
             };
             let sendForm = JSON.stringify(commande);
             envoiFormulaire(sendForm, "http://localhost:3000/api/teddies/order");
-            console.log("formulaire envoyé"+commande);
-            //une fois la commande passé, suppression du localStorage, du contact, du tableau :
+            console.log("formulaire envoyé" + commande);
+            //une fois la commande passé, suppression du localStorage, du contact, du tableau produit :
             contact = {};
             products = [];
             localStorage.clear();
-        }else{
+        }else if(checkPanier() == false){
             alert("Choisissez un article pour validé une commande")
-            console.log("-- ERREUR, aucun article à la commande --");
+            console.log("-- Aucun article dans la commande --");
         }
     });
 }
@@ -400,6 +412,11 @@ const recapCommande = () => {
     //colonne nom teddy :
     let recapNomTeddy = document.createElement("th");
     recapNomTeddy.textContent = "Nom";
+    //colonne couleur :
+    /*let recapColorTeddy = document.createElement("th");
+    recapColorTeddy.textContent = "Couleur";
+    recapColorTeddy.style.paddingLeft = "10px";
+    */
     //colonne prix teddy :
     let recapPrixTeddy = document.createElement("th");
     recapPrixTeddy.textContent = "Prix"
@@ -407,6 +424,7 @@ const recapCommande = () => {
     recapPanier.appendChild(tableauConfirmation);
     rang.appendChild(recapImgTeddy);
     rang.appendChild(recapNomTeddy);
+    //rang.appendChild(recapColorTeddy);
     rang.appendChild(recapPrixTeddy);
 
     //incrémentation de l'id pour chaque ligne de teddy :
@@ -427,7 +445,12 @@ const recapCommande = () => {
         nomTeddyRecap.textContent = orderTeddy.name;
         nomTeddyRecap.style.color = "darkBlue";
         nomTeddyRecap.classList.add('text-center');
-        
+
+       /* let colorTeddyRecap = document.createElement("td");
+        colorTeddyRecap.setAttribute("id", "choixColor");
+        colorTeddyRecap.textContent = orderTeddy.colors[i]; 
+        colorTeddyRecap.style.paddingLeft = "20px";*/
+       
         let prixTeddyRecap = document.createElement("td");
         prixTeddyRecap.textContent = orderTeddy.price / 100 + " €";
         prixTeddyRecap.style.paddingLeft = "20px";
@@ -435,6 +458,7 @@ const recapCommande = () => {
         tableauConfirmation.appendChild(rangArticle);
         rangArticle.appendChild(imgTeddyRecap);
         rangArticle.appendChild(nomTeddyRecap);
+        //rangArticle.appendChild(colorTeddyRecap);
         rangArticle.appendChild(prixTeddyRecap);
     });
     //ligne total du tableau :
