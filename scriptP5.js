@@ -248,6 +248,7 @@ const checkInput = () => {
     un texte et une expression reguliere, retourne true ou false. */
     if(number.test(nom)==true || specialCharacter.test(nom)==true || nom==""){
         message = "Les inforamtions saisie pour le nom ne sont pas valide, entrer des informations valide";
+        console.log("erreur pour la saisi du nom");
     }else{
         console.log("nom ok");
     }
@@ -255,6 +256,7 @@ const checkInput = () => {
     let prenom = document.getElementById("prenom").value;
     if(number.test(prenom)==true || specialCharacter.test(prenom)==true || prenom==""){
         message = "Les inforamtions saisie pour le prénom ne sont pas valide, entrer des informations valide";
+        console.log("erreur pour la saisi du prenom");
     }else{
         console.log("prénom ok");
     }
@@ -262,6 +264,7 @@ const checkInput = () => {
     let emailInput = document.getElementById("email").value;
     if(email.test(emailInput)==false){
         message = "Les inforamtions saisie pour l'email ne sont pas valide, entrer des informations valide";
+        console.log("erreur pour la saisi du mail");
     }else{
         console.log("email ok");
     }
@@ -269,6 +272,7 @@ const checkInput = () => {
     let adresse = document.getElementById("adresse").value;
     if(specialCharacter.test(adresse)==true || adresse==""){
         message = "Les inforamtions saisie pour l'adresse ne sont pas valide, entrer des informations valide";
+        console.log("erreur pour la saisi de l'adresse");
     }else{
         console.log("adresse ok");
     }
@@ -276,6 +280,7 @@ const checkInput = () => {
     let ville = document.getElementById("ville").value;
     if(number.test(ville)==true || specialCharacter.test(ville)==true || ville==""){
         message = "Les inforamtions saisie pour la ville ne sont pas valide, entrer des informations valide";
+        console.log("erreur pour la saisi de la ville");
     }else{
         console.log("ville ok");
     }
