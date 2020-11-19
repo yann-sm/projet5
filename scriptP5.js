@@ -2,14 +2,19 @@
 //requête GET pour récupérer les éléments du serveur :
 const displayAllTeddies = () => {
     return new Promise((resolve) => {
+        //creation d'un objet XMLHttpRequest qui permet d'envoyer des requêtes HTTP :
         let request = new XMLHttpRequest();
         request.onreadystatechange = function() {
+            //si opération terminé et que tout le status est ok et < 400 :
             if (this.readyState == XMLHttpRequest.DONE && this.status == 200 && this.status < 400) {
-                resolve(JSON.parse(this.responseText));
+            //la promise est résolu et on renvoi le texte reçu du serveur suite à l'envoie de la requête :
+                resolve(JSON.parse(this.responseText));//l'objet JSON est transformé en javascript
                 console.log("Connecté"); 
             }
         };
+        //demande d'ouverture de connexion, ici get pour recupérer les element de l'url donnée :
         request.open("GET", "http://localhost:3000/api/teddies/" + idTeddy);
+        //envoie de la demande :
         request.send();
     });
 };
@@ -138,6 +143,7 @@ async function ajouterAuPAnier() {
     let teddImg = add.imageUrl;
     let teddPrice = add.price;
     let teddColor = document.getElementById("listOptionColor").options[document.getElementById("listOptionColor").selectedIndex].text;
+    //push pour ajouter des items à la fin du tableau panier :
     panier.push({
         teddId,
         teddName,
@@ -321,6 +327,7 @@ const checkPanier = () => {
 //let products = [];
 //let url = "http://localhost:3000/api/teddies/order";
 
+//initialisation  sessionStorage :
 let order = JSON.parse(sessionStorage.getItem("order"));
 
 const envoiFormulaire = (sendForm, url) => {
@@ -328,7 +335,9 @@ const envoiFormulaire = (sendForm, url) => {
         let request = new XMLHttpRequest();
             request.onload = function () {
                 if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
+                    //on ajoute une entrée avec setItem :
                     sessionStorage.setItem("order", this.responseText);
+                    //on bascule sur une autre page :
                     window.location = "./confirmation_commande.html";
                     resolve(JSON.parse(this.responseText));
                     console.log("formulaire envoyé"); 
@@ -362,8 +371,9 @@ const confiramtionCommande = () => {
                 contact, 
                 products
             };
-            //transformation de l'objet en JSON :
+            //transformation de l'objet commande en JSON :
             let sendForm = JSON.stringify(commande);
+            //envoie de sendForm :
             envoiFormulaire(sendForm, "http://localhost:3000/api/teddies/order");
             console.log("formulaire envoyé" + commande);
             //une fois la commande passé, suppression du localStorage, du contact, du tableau produit :
@@ -376,7 +386,7 @@ const confiramtionCommande = () => {
         }
     });
 }
-//recup des infos pour affichage dans la page confirmation :
+//recup des infos contact pour l'affichage dans la page confirmation :
 const recupOrder = () => {
     //si différent de null on recup de order les elements :
     if(order != null){
